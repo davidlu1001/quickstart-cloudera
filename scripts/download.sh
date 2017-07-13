@@ -79,6 +79,7 @@ export AWS_INSTANCEID=$(curl -s http://169.254.169.254/latest/dynamic/instance-i
 export RHEL_VERSION_HVM='7.1'
 
 #export AWS_HVM_AMI=$(/usr/bin/python /home/centos/cloudera/misc/RHELami.py -v ${RHEL_VERSION_HVM} -r ${AWS_DEFAULT_REGION} -t hvm)
+#CentOS Linux 7 1703_01 ap-southeast-1
 export AWS_HVM_AMI='ami-30318f53'
 #AWS_HVM_AMI=$(/usr/bin/python /home/centos/cloudera/misc/RHELami.py -v ${RHEL_VERSION_HVM} -r ${AWS_DEFAULT_REGION} -t hvm)
 echo "DEBUG ami-id: ${AWS_HVM_AMI}"

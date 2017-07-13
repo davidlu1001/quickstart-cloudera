@@ -13,6 +13,3 @@ aws s3 cp templates s3://${s3_bucket}/${s3_bucket_prefix}/templates/ ${cp_option
 aws s3 cp scripts s3://${s3_bucket}/${s3_bucket_prefix}/scripts/ ${cp_option}
 aws s3 cp submodules s3://${s3_bucket}/${s3_bucket_prefix}/submodules/ ${cp_option}
 aws s3 cp media s3://${s3_bucket}/${s3_bucket_prefix}/media/ ${cp_option}
-
-#aws s3 cp media s3://${s3_bucket}/media/ ${cp_option}
-#aws s3 cp scripts s3://${s3_bucket}/scripts/ ${cp_option}
