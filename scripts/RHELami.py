@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import argparse
 import subprocess
 import json
@@ -28,9 +30,9 @@ def get_creationdate(data):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Find latest RHEL AMI')
+    parser = argparse.ArgumentParser(description='Find latest CentOS AMI')
     parser.add_argument('-v', dest="version",metavar="VERSION",required = True,
-                              help='RHEL Version')
+                              help='CentOS Version')
     parser.add_argument('-r', dest="region",metavar="REGION",required = True,
                               help='REGION to query AMI')
     parser.add_argument('-t', dest="type",metavar="AMI_TYPE",required = True,
@@ -41,9 +43,9 @@ def main():
     region = args.region
     ami_type = args.type
 
-    ami_name = 'RHEL-'+ version + "*" + "-x86_64*";
+    ami_name = 'CentOS Linux 7'+ " x86_64 " + "HVM EBS" + "*"
 
-    cmd = aws_cmd + " ec2 describe-images --filters \"Name=name,Values=AMI-PLACEHOLDER\" \"Name=virtualization-type,Values=VTYPE-PLACEHOLDER\" --owners 309956199498 --region REGION-PLACEHOLDER"
+    cmd = aws_cmd + " ec2 describe-images --filters \"Name=name,Values=AMI-PLACEHOLDER\" \"Name=virtualization-type,Values=VTYPE-PLACEHOLDER\" --owners 410186602215 --region REGION-PLACEHOLDER"
     cmd = cmd.replace('AMI-PLACEHOLDER',ami_name)
     cmd = cmd.replace('VTYPE-PLACEHOLDER',ami_type)
     cmd = cmd.replace('REGION-PLACEHOLDER',region)

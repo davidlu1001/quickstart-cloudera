@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "AWS Infrastructure Deployment for Cloudera Hadoop (000A)",
+    "Description": "AWS Infrastructure Deployment for Cloudera Hadoop",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
@@ -79,7 +79,7 @@
                 "m4.xlarge",
                 "m4.large"
             ],
-            "Default": "m4.large",
+            "Default": "t2.small",
             "Description": "Amazon EC2 instance type for the ClusterLauncher Instance.",
             "Type": "String"
         },
@@ -110,7 +110,7 @@
         "QSS3BucketName": {
             "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
             "ConstraintDescription": "AWS Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "quickstart-reference",
+            "Default": "qdp-quickstart-reference",
             "Description": "S3 bucket name for the AWS Quick Start assets. AWS Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
             "Type": "String"
         },
@@ -137,49 +137,49 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "RHEL71HVM": "RHEL-7.1_HVM-20150803-x86_64-1-Hourly2-GP2"
+                "CentOS7HVM": "CentOS Linux 7 x86_64 HVM EBS 1703_01"
             },
             "ap-northeast-1": {
-                "RHEL71HVM": "ami-4eee514e"
+                "CentOS7HVM": "ami-571e3c30"
             },
             "ap-northeast-2": {
-                "RHEL71HVM": "ami-86c10fe8"
+                "CentOS7HVM": "ami-97cb19f9"
             },
             "ap-south-1": {
-                "RHEL71HVM": "ami-fcbfd593"
+                "CentOS7HVM": "ami-11f0837e"
             },
             "ap-southeast-1": {
-                "RHEL71HVM": "ami-56e2ee04"
+                "CentOS7HVM": "ami-30318f53"
             },
             "ap-southeast-2": {
-                "RHEL71HVM": "ami-af9ede95"
+                "CentOS7HVM": "ami-24959b47"
             },
             "ca-central-1": {
-                "RHEL71HVM": "ami-b064d6d4"
+                "CentOS7HVM": "ami-daeb57be"
             },
             "eu-central-1": {
-                "RHEL71HVM": "ami-38d2d625"
+                "CentOS7HVM": "ami-7cbc6e13"
             },
             "eu-west-1": {
-                "RHEL71HVM": "ami-a42a7bd3"
+                "CentOS7HVM": "ami-0d063c6b"
             },
             "eu-west-2": {
-                "RHEL71HVM": "ami-e9343e8d"
+                "CentOS7HVM": "ami-c22236a6"
             },
             "sa-east-1": {
-                "RHEL71HVM": "ami-b7e66faa"
+                "CentOS7HVM": "ami-864f2dea"
             },
             "us-east-1": {
-                "RHEL71HVM": "ami-dbc96ab0"
+                "CentOS7HVM": "ami-ae7bfdb8"
             },
             "us-east-2": {
-                "RHEL71HVM": "ami-96164cf3"
+                "CentOS7HVM": "ami-9cbf9bf9"
             },
             "us-west-1": {
-                "RHEL71HVM": "ami-c1996685"
+                "CentOS7HVM": "ami-7c280d1c"
             },
             "us-west-2": {
-                "RHEL71HVM": "ami-c15a52f1"
+                "CentOS7HVM": "ami-0c2aba6c"
             }
         }
     },
@@ -440,7 +440,7 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "/scripts/download.sh --output-document=/home/ec2-user/cloudera/download.sh"
+                                            "/scripts/download.sh --output-document=/home/centos/cloudera/download.sh"
                                         ]
                                     ]
                                 }
@@ -458,7 +458,7 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "/scripts/cfn-replace.sh --output-document=/home/ec2-user/cloudera/cfn-replace.sh"
+                                            "/scripts/cfn-replace.sh --output-document=/home/centos/cloudera/cfn-replace.sh"
                                         ]
                                     ]
                                 }
@@ -476,7 +476,7 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "/scripts/cleanup.sh --output-document=/home/ec2-user/cloudera/cleanup.sh"
+                                            "/scripts/cleanup.sh --output-document=/home/centos/cloudera/cleanup.sh"
                                         ]
                                     ]
                                 }
@@ -486,11 +486,12 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "/bin/sh /home/ec2-user/cloudera/cfn-replace.sh PUBLICSUBNETID-CFN-REPLACE=",
+                                            "/bin/sh -x /home/centos/cloudera/cfn-replace.sh PUBLICSUBNETID-CFN-REPLACE=",
                                             {
                                                 "Ref": "PublicSubnet"
                                             },
-                                            " /home/ec2-user/cloudera/download.sh"
+                                            " /home/centos/cloudera/download.sh",
+                                            " >> /home/centos/install.log"
                                         ]
                                     ]
                                 }
@@ -500,11 +501,12 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "/bin/sh /home/ec2-user/cloudera/cfn-replace.sh PRIVATESUBNETID-CFN-REPLACE=",
+                                            "/bin/sh -x /home/centos/cloudera/cfn-replace.sh PRIVATESUBNETID-CFN-REPLACE=",
                                             {
                                                 "Ref": "PrivateSubnet"
                                             },
-                                            " /home/ec2-user/cloudera/download.sh"
+                                            " /home/centos/cloudera/download.sh",
+                                            " >> /home/centos/install.log"
                                         ]
                                     ]
                                 }
@@ -514,11 +516,12 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "/bin/sh /home/ec2-user/cloudera/cfn-replace.sh SUBNETID-CFN-REPLACE=",
+                                            "/bin/sh -x /home/centos/cloudera/cfn-replace.sh SUBNETID-CFN-REPLACE=",
                                             {
                                                 "Ref": "PrivateSubnet"
                                             },
-                                            " /home/ec2-user/cloudera/download.sh"
+                                            " /home/centos/cloudera/download.sh",
+                                            " >> /home/centos/install.log"
                                         ]
                                     ]
                                 }
@@ -528,11 +531,12 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "/bin/sh /home/ec2-user/cloudera/cfn-replace.sh SECUTIRYGROUPIDS-CFN-REPLACE=",
+                                            "/bin/sh -x /home/centos/cloudera/cfn-replace.sh SECUTIRYGROUPIDS-CFN-REPLACE=",
                                             {
                                                 "Ref": "ClusterLauncherSecurityGroup"
                                             },
-                                            " /home/ec2-user/cloudera/download.sh"
+                                            " /home/centos/cloudera/download.sh",
+                                            " >> /home/centos/install.log"
                                         ]
                                     ]
                                 }
@@ -542,11 +546,12 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "/bin/sh /home/ec2-user/cloudera/cfn-replace.sh KEYNAME-CFN-REPLACE=",
+                                            "/bin/sh -x /home/centos/cloudera/cfn-replace.sh KEYNAME-CFN-REPLACE=",
                                             {
                                                 "Ref": "KeyName"
                                             },
-                                            " /home/ec2-user/cloudera/download.sh"
+                                            " /home/centos/cloudera/download.sh",
+                                            " >> /home/centos/install.log"
                                         ]
                                     ]
                                 }
@@ -556,8 +561,9 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "/bin/sh /home/ec2-user/cloudera/cfn-replace.sh HADOOPINSTANCE-COUNT-CFN-REPLACE=5",
-                                            " /home/ec2-user/cloudera/download.sh"
+                                            "/bin/sh -x /home/centos/cloudera/cfn-replace.sh HADOOPINSTANCE-COUNT-CFN-REPLACE=5",
+                                            " /home/centos/cloudera/download.sh",
+                                            " >> /home/centos/install.log"
                                         ]
                                     ]
                                 }
@@ -567,8 +573,9 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "/bin/sh /home/ec2-user/cloudera/cfn-replace.sh CLUSTERTYPE-REPLACE-ME=Advanced",
-                                            " /home/ec2-user/cloudera/download.sh"
+                                            "/bin/sh -x /home/centos/cloudera/cfn-replace.sh CLUSTERTYPE-REPLACE-ME=Advanced",
+                                            " /home/centos/cloudera/download.sh",
+                                            " >> /home/centos/install.log"
                                         ]
                                     ]
                                 }
@@ -578,8 +585,9 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "/bin/sh /home/ec2-user/cloudera/cfn-replace.sh HADOOPINSTANCE-TYPE-CFN-REPLACE=m4.large",
-                                            " /home/ec2-user/cloudera/download.sh"
+                                            "/bin/sh -x /home/centos/cloudera/cfn-replace.sh HADOOPINSTANCE-TYPE-CFN-REPLACE=t2.small",
+                                            " /home/centos/cloudera/download.sh",
+                                            " >> /home/centos/install.log"
                                         ]
                                     ]
                                 }
@@ -606,7 +614,7 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "RHEL71HVM"
+                        "CentOS7HVM"
                     ]
                 },
                 "IamInstanceProfile": {
@@ -631,7 +639,7 @@
                                 "export PATH=$PATH:/usr/local/aws/bin/ \n",
                                 "easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz \n",
                                 "yum install wget python unzip java -y \n",
-                                "mkdir -p /home/ec2-user/cloudera/ \n",
+                                "mkdir -p /home/centos/cloudera/ \n",
                                 "cfn-init -v --stack ",
                                 {
                                     "Ref": "AWS::StackName"
@@ -647,7 +655,7 @@
                                     "Ref": "WebServerDownloadWaitHandle"
                                 },
                                 "'\n",
-                                "/bin/sh /home/ec2-user/cloudera/download.sh",
+                                "/bin/sh -x /home/centos/cloudera/download.sh",
                                 " -b ",
                                 {
                                     "Ref": "QSS3BucketName"
@@ -656,14 +664,14 @@
                                 {
                                     "Ref": "QSS3KeyPrefix"
                                 },
-                                " > /home/ec2-user/install.log",
+                                " >> /home/centos/install.log",
                                 "\n",
                                 "cfn-signal -e $? -r \"The AWS Cloudera Cluster Launcher is ready\" '",
                                 {
                                     "Ref": "WebServerWaitHandle"
                                 },
                                 "'\n",
-                                "/bin/sh /home/ec2-user/cloudera/cleanup.sh \n"
+                                #"/bin/sh /home/centos/cloudera/cleanup.sh \n"
                             ]
                         ]
                     }

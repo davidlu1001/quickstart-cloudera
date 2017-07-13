@@ -87,7 +87,7 @@
                 "m4.xlarge",
                 "m4.large"
             ],
-            "Default": "m4.large",
+            "Default": "t2.small",
             "Description": "Amazon EC2 instance type for the ClusterLauncher Instance.",
             "Type": "String"
         },
@@ -123,7 +123,7 @@
         "QSS3BucketName": {
             "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
             "ConstraintDescription": "AWS Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "quickstart-reference",
+            "Default": "qdp-quickstart-reference",
             "Description": "S3 bucket name for the AWS Quick Start assets. AWS Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
             "Type": "String"
         },
@@ -136,6 +136,7 @@
         },
         "RemoteAccessCIDR": {
             "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "Default": "0.0.0.0/0",
             "ConstraintDescription": "Must be a valid CIDR range of the form x.x.x.x/x.",
             "Description": "IP CIDR from which you are likely to SSH into the ClusterLauncher instance. Note: a value of 0.0.0.0/0 will allow access from ANY ip address",
             "MaxLength": "18",
