@@ -37,7 +37,9 @@ BUILDBUCKET=$(echo ${BUILDBUCKET} | sed 's/"//g')
 # ------------------------------------------------------------------
 
 # first update time
-yum -y install ntp vim
+yum -y install ntp vim telnet
+# set SELinux permissive 
+setenforce 0
 service ntpd start
 ntpdate  -u 0.amazon.pool.ntp.org
 
