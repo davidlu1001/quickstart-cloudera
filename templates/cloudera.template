@@ -623,7 +623,7 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "ClusterLauncher Instance (Public Subnet)"
+                        "Value": "Cloudera_Director_Public"
                     }
                 ],
                 "InstanceType": {

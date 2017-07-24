@@ -29,7 +29,7 @@ done
 
 
 
-VERSION=2.1.0
+VERSION=2.5.0
 BUILDBUCKET=$(echo ${BUILDBUCKET} | sed 's/"//g')
 
 # ------------------------------------------------------------------
@@ -37,7 +37,8 @@ BUILDBUCKET=$(echo ${BUILDBUCKET} | sed 's/"//g')
 # ------------------------------------------------------------------
 
 # first update time
-yum -y install ntp vim telnet
+yum -y install epel-release
+yum -y install ntp vim telnet wget ansible
 # set SELinux permissive 
 setenforce 0
 service ntpd start
@@ -51,7 +52,7 @@ mkdir -p /home/centos/cloudera/setup-default
 cd /home/centos/cloudera
 unzip setup-default.zip
 
-export DIRECTOR_LATEST_VERSION=2.1.0
+export DIRECTOR_LATEST_VERSION=2.5.0
 AWS_SIMPLE_CONF=/home/centos/cloudera/setup-default/aws.simple.conf
 AWS_REFERENCE_CONF=/home/centos/cloudera/setup-default/aws.reference.conf
 wget https://s3.amazonaws.com/${BUILDBUCKET}/media/aws.simple.conf.${DIRECTOR_LATEST_VERSION} --output-document=${AWS_SIMPLE_CONF}
@@ -190,10 +191,10 @@ export INSTANCEKEYPAIRESC=\\/home\\/centos\\/cloudera\\-aws\\-quickstart\\-${CUR
 
 
 # Pull bits from Cloudera repo
-DIRECTOR_VERSION='2.4.0-1.director240.p0.25.el7'
+DIRECTOR_VERSION='2.5.0-1.director250.p0.21.el7'
 yum-config-manager --add-repo http://archive.cloudera.com/director/redhat/7/x86_64/director/cloudera-director.repo
 # Edit cloudera director repo file
-awk 'NR==4 {$0="baseurl=http://archive.cloudera.com/director/redhat/7/x86_64/director/2.4.0/"} { print }' /etc/yum.repos.d/cloudera-director.repo > /etc/yum.repos.d/cloudera-director.repo1
+awk 'NR==4 {$0="baseurl=http://archive.cloudera.com/director/redhat/7/x86_64/director/2.5.0/"} { print }' /etc/yum.repos.d/cloudera-director.repo > /etc/yum.repos.d/cloudera-director.repo1
 rm -f /etc/yum.repos.d/cloudera-director.repo
 mv /etc/yum.repos.d/cloudera-director.repo1 /etc/yum.repos.d/cloudera-director.repo
 yum clean all
